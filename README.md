@@ -4,7 +4,7 @@
 
 A full-stack IoT + Deep Learning system that ingests live beehive sensor data (temperature, humidity, pressure), runs it through an LSTM neural network, and gives beekeepers a live dashboard telling them whether their hive is healthy — without opening the box.
 
-![Dashboard Demo](assets/dashboard_anomaly_detection_app.gif)
+![Dashboard Demo](assets_readme/dashboard_anomaly_detection_app.gif)
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-Keras-FF6F00?logo=tensorflow&logoColor=white)
