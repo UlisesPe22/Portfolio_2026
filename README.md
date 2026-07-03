@@ -65,7 +65,7 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 
 - **Scaling:** all features normalized with a **MinMax scaler**. This is used to preserve and encode the distance information between points.
 - **Engineered features:** 3 additional features capturing short/mid/long-term drift are added to train the anomaly detection model — the Euclidean distance between the current point *x* and *x-n*, for **n = 3, 5, and 10**
-- <img width="1477" height="120" alt="image" src="https://github.com/user-attachments/assets/da9d164d-b4dd-40ca-bd8b-109ac077f1f6" />
+- <img width="1100" height="120" alt="image" src="https://github.com/user-attachments/assets/da9d164d-b4dd-40ca-bd8b-109ac077f1f6" />
 
 
 ## Model: LSTM on Sliding Windows // Description of Supervised Training 
@@ -81,13 +81,9 @@ The dataset came with labeled ground truth (queen_status), so the model was trai
 - **Algorithm:** LSTM (Long Short-Term Memory) — chosen for its ability to learn temporal dependencies in sequential sensor data
 
 ## Results
-
 `0` = Normal &nbsp;&nbsp;|&nbsp;&nbsp; `1` = Anomaly
 
-<!-- 📊 IMAGE: confusion matrix / accuracy plot -->
-<img width="810" height="645" alt="image" src="https://github.com/user-attachments/assets/5e086620-e16d-46b8-8340-7ea92bbbc9cc" />
-
-<img width="732" height="197" alt="image" src="https://github.com/user-attachments/assets/5e0f31b8-2fcf-4715-8ad6-ed3e66cfd2d5" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/5e086620-e16d-46b8-8340-7ea92bbbc9cc" /> <img width="400" alt="image" src="https://github.com/user-attachments/assets/5e0f31b8-2fcf-4715-8ad6-ed3e66cfd2d5" />
 
 ## System Architecture
 
