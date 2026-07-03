@@ -4,14 +4,12 @@
 
 A full-stack IoT + Deep Learning system that ingests live beehive sensor data (temperature, humidity, pressure), runs it through an LSTM neural network, and gives beekeepers a live dashboard telling them whether their hive is healthy — without opening the box.
 
-<!-- 🎥 DEMO: drop your GIF/video here, e.g. -->
-<!-- ![Dashboard Demo](assets/dashboard-demo.gif) -->
+
 
 ![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
 ![TensorFlow](https://img.shields.io/badge/TensorFlow-Keras-FF6F00?logo=tensorflow&logoColor=white)
 ![Flask](https://img.shields.io/badge/Flask-Backend-000000?logo=flask&logoColor=white)
 ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)
-![Status](https://img.shields.io/badge/Status-Prototype-yellow)
 
 
 ## Overview
@@ -99,16 +97,6 @@ The dataset came with labeled ground truth (queen_status), so the model was trai
 
 ## System Architecture
 
-```
-simulator.py ──POST JSON──▶ /api/hive ──▶ RollingBuffer (last 20 readings)
-                                              │
-                                              ▼
-                              predict.py (build 10-step window,
-                              scale, compute Euclidean-distance
-                              features) ──▶ hive_model.h5 ──▶ prediction
-                                              │
-   dashboard.html ◀──poll every 2s── /api/hive/latest + /history
-```
 | Component | Responsibility |
 |---|---|
 | `app.py` | Flask app factory, registers blueprints, initializes DB |
