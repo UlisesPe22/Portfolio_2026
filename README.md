@@ -54,7 +54,7 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 | PC2 | Weather Temperature | 0.19 |
 
 <!-- 📊 normal/anomalous pattern detection over time -->
-<img width="1226" height="648" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
+<img width="860" height="420" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
 
 **Conclusions from EDA:**
 - `hive_temperature`, `hive_humidity`were selected as the predictive features
