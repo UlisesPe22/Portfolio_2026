@@ -13,23 +13,6 @@ A full-stack IoT + Deep Learning system that ingests live beehive sensor data (t
 ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)
 ![Status](https://img.shields.io/badge/Status-Prototype-yellow)
 
----
-
-## Table of Contents
-
-- [Overview](#overview)
-- [The Problem: Why a Queenless Hive Matters](#the-problem-why-a-queenless-hive-matters)
-- [Data & IoT Sensors](#data--iot-sensors)
-- [Normal vs. Anomaly](#normal-vs-anomaly)
-- [Exploratory Data Analysis](#exploratory-data-analysis)
-- [Feature Engineering](#feature-engineering)
-- [Model: LSTM on Sliding Windows](#model-lstm-on-sliding-windows)
-- [Results](#results)
-- [System Architecture](#system-architecture)
-- [API Reference](#api-reference)
-- [Getting Started](#getting-started)
-
----
 
 ## Overview
 
@@ -53,7 +36,7 @@ Early detection is the difference between a quick intervention and losing the hi
 - **Dataset:** Yang, A. (2023). *Beehive Sounds* [Data set]. Kaggle. https://www.kaggle.com/datasets/annajyang/beehive-sounds
 - **IoT Device:** BME280 temperature / humidity / pressure sensor, mounted to stream live hive conditions
 
-## Normal vs. Anomaly
+### Normal vs. Anomaly
 
 | State | Meaning |
 |---|---|
@@ -62,7 +45,7 @@ Early detection is the difference between a quick intervention and losing the hi
 
 ## Exploratory Data Analysis
 
-A PCA analysis was run to understand which sensor readings drive the most variance in hive state. The results showed temperature and humidity inside the hive are the most significant featrues and therefore the anomlay ´redction system can be developed with that data 
+A PCA analysis was run to understand which sensor readings drive the most variance in hive state. The results showed temperature and humidity inside the hive are the most significant featrues and therefore the anomlay predction system can be developed with that data.
 **PCA — Key Features by Principal Component**
 
 | Principal Component | Feature | Loading |
@@ -82,19 +65,20 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 <img width="1226" height="648" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
 
 **Conclusions from EDA:**
-- `hive_temperature`, `hive_humidity`, and `hive_pressure` were selected as the predictive features
+- `hive_temperature`, `hive_humidity`were selected as the predictive features
 - Target variable: `queen_status`
+- **As shown in the image above, the information that differentiates the two states comes from the distance between points and from the height difference between normal and anomalous points.**
 
 ## Feature Engineering
 
-- **Scaling:** all features normalized with a **MinMax scaler**
-- **Engineered features:** 3 additional features capturing short/mid/long-term drift — the Euclidean distance between the current point *x* and *x-n*, for **n = 3, 5, and 10**
+- **Scaling:** all features normalized with a **MinMax scaler**. This is used to preserve and encode the distance information between points.
+- **Engineered features:** 3 additional features capturing short/mid/long-term drift are added to train the anomaly detection model — the Euclidean distance between the current point *x* and *x-n*, for **n = 3, 5, and 10**
 - <img width="1477" height="120" alt="image" src="https://github.com/user-attachments/assets/da9d164d-b4dd-40ca-bd8b-109ac077f1f6" />
 
 
-## Model: LSTM on Sliding Windows
+## Model: LSTM on Sliding Windows // Description of Supervised Training 
 
-The model doesn't classify single readings — it classifies **patterns over time**, using a sliding window approach:
+The dataset came with labeled ground truth (queen_status), so the model was trained in a supervised fashion — learning to map sequences of sensor readings to a known Normal/Anomaly label. This training phase is what produced hive_model.h5
 
 - Each window contains **10 chronologically ordered points**
   - Window 1: indices 0–9, Window 2: indices 1–10, and so on
@@ -147,7 +131,7 @@ simulator.py ──POST JSON──▶ /api/hive ──▶ RollingBuffer (last 20
 
 ## Getting Started
 
-```powershell
+```
 # 1. Create a virtual environment
 
 # 2. Install dependencies
