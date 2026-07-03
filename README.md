@@ -1,20 +1,8 @@
 # 🐝Beehive Anomaly Detection System
 
-**Remote, real-time monitoring for beekeepers — catching queenless hives before they collapse.**
-
-A full-stack IoT + Deep Learning system that ingests live beehive sensor data (temperature, humidity, pressure), runs it through an LSTM neural network, and gives beekeepers a live dashboard telling them whether their hive is healthy — without opening the box.
-
-![Dashboard Demo](assets_readme/dashboard_anomaly_detection_app.gif)
-
-![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
-![TensorFlow](https://img.shields.io/badge/TensorFlow-Keras-FF6F00?logo=tensorflow&logoColor=white)
-![Flask](https://img.shields.io/badge/Flask-Backend-000000?logo=flask&logoColor=white)
-![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)
-
-
 ## Overview
 
-Beekeepers can't check every hive, every day — and by the time a problem is visible from the outside, it's often too late. **Hive Guardian** turns a hive into a connected device: a **BME280 sensor** streams temperature, humidity, and pressure readings, and a trained **LSTM model** continuously analyzes the pattern of those readings to flag whether the colony looks healthy ("queen producing") or at risk ("queen not producing / not accepted").
+Beekeepers can't check every hive, every day — and by the time a problem is visible from the outside, it's often too late. This solution turns a hive into a connected device: a **BME280 sensor** streams temperature, humidity, and pressure readings, and a trained **LSTM model** continuously analyzes the pattern of those readings to flag whether the colony looks healthy ("queen producing") or at risk ("queen not producing / not accepted").
 
 The result is a live web dashboard a beekeeper can check from their phone or laptop — remote hive health monitoring, without disturbing the bees.
 
@@ -29,12 +17,18 @@ A hive's queen is its entire reason for organizational cohesion. When she is mis
 
 Early detection is the difference between a quick intervention and losing the hive entirely — which is the entire premise for automating this with sensors + ML instead of relying on manual inspection.
 
+![Dashboard Demo](assets_readme/dashboard_anomaly_detection_app.gif)
+
+![Python](https://img.shields.io/badge/Python-3.11-3776AB?logo=python&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-Keras-FF6F00?logo=tensorflow&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-Backend-000000?logo=flask&logoColor=white)
+![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)
+
+
 ## Data & IoT Sensors
 
 - **Dataset:** Yang, A. (2023). *Beehive Sounds* [Data set]. Kaggle. https://www.kaggle.com/datasets/annajyang/beehive-sounds
 - **IoT Device:** BME280 temperature / humidity / pressure sensor, mounted to stream live hive conditions
-
-### Normal vs. Anomaly
 
 | State | Meaning |
 |---|---|
@@ -101,21 +95,12 @@ The dataset came with labeled ground truth (queen_status), so the model was trai
 |---|---|
 | `app.py` | Flask app factory, registers blueprints, initializes DB |
 | `config.py` | Central config: DB path, host `0.0.0.0`, port `5000`, `MODEL_PATH` |
-| `api/routes.py` | All HTTP endpoints (see [API Reference](#api-reference)) |
+| `api/routes.py` | All HTTP endpoints|
 | `buffer/buffer.py` | In-memory rolling window of the last 20 readings — the model's actual input source |
 | `models/predict.py` | Builds the 10-step window, scales features, computes distance features, runs inference |
 | `models/database.py` | SQLite connection helpers, table initialization |
 | `templates/dashboard.html` | Live dashboard — polls the API every 2s, shows prediction, confidence, stats, recent readings |
 | `tests/simulator.py` | Not a unit test — replays real historical rows into the live API to simulate a sensor stream |
-
-## API Reference
-
-| Method | Endpoint | Description |
-|---|---|---|
-| `POST` | `/api/hive` | Receive a new sensor reading, push to buffer, run prediction |
-| `GET` | `/` | Serve the dashboard |
-| `GET` | `/api/hive/latest` | Latest reading + prediction (polled by the dashboard) |
-| `GET` | `/api/hive/history?n=20` | Last N readings, for the recent-entries table |
 
 ## Getting Started
 
@@ -131,7 +116,5 @@ python app.py
 # 4. In a second terminal, feed it live-looking data from the historical DB
 python tests/simulator.py
 ```
-
 Then open `http://localhost:5000` to see the live dashboard.
 
-> ⚠️ **Warm-up period:** the first ~10 posted readings won't produce a prediction ("Not enough rows to build a window") — this is expected while the rolling buffer fills up.
