@@ -1,4 +1,4 @@
-# 🐝 Hive Guardian — Beehive Anomaly Detection System
+# 🐝Beehive Anomaly Detection System
 
 **Remote, real-time monitoring for beekeepers — catching queenless hives before they collapse.**
 
