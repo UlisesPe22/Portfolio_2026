@@ -28,9 +28,6 @@ A full-stack IoT + Deep Learning system that ingests live beehive sensor data (t
 - [System Architecture](#system-architecture)
 - [API Reference](#api-reference)
 - [Getting Started](#getting-started)
-- [Known Limitations](#known-limitations)
-- [Roadmap](#roadmap)
-- [Author](#author)
 
 ---
 
@@ -65,33 +62,24 @@ Early detection is the difference between a quick intervention and losing the hi
 
 ## Exploratory Data Analysis
 
-A PCA analysis was run to understand which sensor readings drive the most variance in hive state.
+A PCA analysis was run to understand which sensor readings drive the most variance in hive state. The results showed temperature and humidity inside the hive are the most significant featrues and therefore the anomlay ´redction system can be developed with that data 
+**PCA — Key Features by Principal Component**
 
-**Principal Component 1 (PC1) — Key Features**
+| Principal Component | Feature | Loading |
+|---|---|---|
+| PC1 | Weather Temperature | 0.48 |
+| PC1 | Weather Humidity | 0.48 |
+| PC1 | Hive Humidity | 0.37 |
+| PC1 | Hive Temperature | 0.36 |
+| PC1 | Wind Speed | 0.33 |
+| PC2 | Hive Pressure | 0.63 |
+| PC2 | Weather Pressure | 0.63 |
+| PC2 | Hive Temperature | 0.33 |
+| PC2 | Weather Humidity | 0.21 |
+| PC2 | Weather Temperature | 0.19 |
 
-| Feature | Loading |
-|---|---|
-| Weather Temperature | 0.48 |
-| Weather Humidity | 0.48 |
-| Hive Humidity | 0.37 |
-| Hive Temperature | 0.36 |
-| Wind Speed | 0.33 |
-
-**Principal Component 2 (PC2) — Key Features**
-
-| Feature | Loading |
-|---|---|
-| Hive Pressure | 0.63 |
-| Weather Pressure | 0.63 |
-| Hive Temperature | 0.33 |
-| Weather Humidity | 0.21 |
-| Weather Temperature | 0.19 |
-
-<!-- 📊 IMAGE: Hive 3 — normal/anomalous pattern detection over time -->
-<!-- ![Hive 3 Pattern Detection](assets/hive3-pattern-detection.png) -->
-
-<!-- 📊 IMAGE: Hive 3 — sensor data registered outside the hive -->
-<!-- ![Hive 3 External Sensors](assets/hive3-external-sensors.png) -->
+<!-- 📊 normal/anomalous pattern detection over time -->
+<img width="1226" height="648" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
 
 **Conclusions from EDA:**
 - `hive_temperature`, `hive_humidity`, and `hive_pressure` were selected as the predictive features
@@ -101,6 +89,8 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 
 - **Scaling:** all features normalized with a **MinMax scaler**
 - **Engineered features:** 3 additional features capturing short/mid/long-term drift — the Euclidean distance between the current point *x* and *x-n*, for **n = 3, 5, and 10**
+- <img width="1477" height="120" alt="image" src="https://github.com/user-attachments/assets/da9d164d-b4dd-40ca-bd8b-109ac077f1f6" />
+
 
 ## Model: LSTM on Sliding Windows
 
@@ -119,15 +109,9 @@ The model doesn't classify single readings — it classifies **patterns over tim
 `0` = Normal &nbsp;&nbsp;|&nbsp;&nbsp; `1` = Anomaly
 
 <!-- 📊 IMAGE: confusion matrix / accuracy plot -->
-<!-- ![Model Results](assets/model-results.png) -->
+<img width="810" height="645" alt="image" src="https://github.com/user-attachments/assets/5e086620-e16d-46b8-8340-7ea92bbbc9cc" />
 
-<!-- TODO: add your accuracy / precision / recall / F1 numbers here once you have them written down, e.g.: -->
-<!-- | Metric | Score |
-|---|---|
-| Accuracy | 0.xx |
-| Precision | 0.xx |
-| Recall | 0.xx |
-| F1-score | 0.xx | -->
+<img width="732" height="197" alt="image" src="https://github.com/user-attachments/assets/5e0f31b8-2fcf-4715-8ad6-ed3e66cfd2d5" />
 
 ## System Architecture
 
@@ -141,30 +125,6 @@ simulator.py ──POST JSON──▶ /api/hive ──▶ RollingBuffer (last 20
                                               │
    dashboard.html ◀──poll every 2s── /api/hive/latest + /history
 ```
-
-**Project structure:**
-
-```
-hive_app/
-├── app.py                  # Flask app factory, entry point
-├── config.py                # Env-driven config (DB path, host, port, model path)
-├── hive_data.db              # SQLite — 286 rows of historical sensor readings
-├── api/
-│   ├── __init__.py
-│   └── routes.py             # POST /api/hive, GET /, /api/hive/latest, /api/hive/history
-├── buffer/
-│   ├── __init__.py
-│   └── buffer.py              # RollingBuffer — thread-safe deque, last 20 readings
-├── models/
-│   ├── __init__.py
-│   ├── predict.py             # Core ML logic: windowing, scaling, inference
-│   └── hive_model.h5           # Trained Keras/TensorFlow LSTM model
-├── templates/
-│   └── dashboard.html          # Dark-themed live dashboard (HTML/CSS/vanilla JS)
-└── tests/
-    └── simulator.py             # Replays historical DB rows as a live sensor feed
-```
-
 | Component | Responsibility |
 |---|---|
 | `app.py` | Flask app factory, registers blueprints, initializes DB |
@@ -188,11 +148,10 @@ hive_app/
 ## Getting Started
 
 ```powershell
-# 1. Activate the virtual environment
-C:\Users\perez\Documents\Bee_sensors\hive_venv\Scripts\Activate.ps1
+# 1. Create a virtual environment
 
-# 2. Install dependencies (no requirements.txt yet — see Known Limitations)
-pip install flask tensorflow numpy pandas requests
+# 2. Install dependencies
+pip install requirements.txt
 
 # 3. Run the app
 python app.py
@@ -204,28 +163,3 @@ python tests/simulator.py
 Then open `http://localhost:5000` to see the live dashboard.
 
 > ⚠️ **Warm-up period:** the first ~10 posted readings won't produce a prediction ("Not enough rows to build a window") — this is expected while the rolling buffer fills up.
-
-## Known Limitations
-
-Being upfront about the current state, since this is a working prototype rather than a production system:
-
-- **No `requirements.txt` yet** — dependencies must be installed manually
-- **Config/code mismatch** — `app.py` defaults to `hive_model.tflite`, but `config.py` correctly points to `hive_model.h5` (the file that actually exists), so `config.MODEL_PATH` wins in practice
-- **Readings aren't persisted** — `POST /api/hive` only writes to the in-memory buffer, not to SQLite; the DB is currently read-only, used only as the simulator's source data
-- **TensorFlow cold-start** — the first request is slow while the model loads; tested under both Python 3.11 and 3.13, but 3.11 is the safer target for TensorFlow compatibility
-
-## Roadmap
-
-- [ ] Add `requirements.txt` / `pyproject.toml` for reproducible installs
-- [ ] Persist incoming readings to SQLite (currently buffer-only)
-- [ ] Deploy model as `.tflite` for lighter-weight inference
-- [ ] Real IoT ingestion (replace simulator with live BME280 stream, e.g. via MQTT)
-- [ ] Alerting (email/SMS/push notification when an anomaly is detected)
-- [ ] Multi-hive dashboard view for beekeepers managing several colonies
-
-## Author
-
-**Ulises Ernesto Pérez Espinosa**
-Applied AI & Data Science student | Data pipelines, ML, and full-stack development
-
-<!-- Add: GitHub | LinkedIn | Portfolio link -->
