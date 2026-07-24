@@ -7,13 +7,13 @@ The result is a live web dashboard a beekeeper can check from their phone or lap
 - [The Problem: Why a Queenless Hive Matters](#the-problem-why-a-queenless-hive-matters)
 - [Data & IoT Sensors](#data--iot-sensors)
   - [Exploratory Data Analysis](#exploratory-data-analysis)
-- [Checking data to identify patterns and properly encode the information](#checking-data-to-identify-patterns-and-properly-encode-the-information)
+- [ Identify patterns and properly encode the information](#identify-patterns-and-properly-encode-the-information)
   - [Feature Engineering](#feature-engineering)
 - [Model: LSTM on Sliding Windows // Description of Supervised Training](#model-lstm-on-sliding-windows--description-of-supervised-training)
   - [Results](#results)
 - [System Architecture](#system-architecture)
 - [Getting Started](#getting-started)
-- 
+ 
 ## The Problem: Why a Queenless Hive Matters
 
 A hive's queen is its entire reason for organizational cohesion. When she is missing or not accepted by the colony:
@@ -62,7 +62,7 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 - Target variable: `queen_status`
 - **As shown in the image above, the information that differentiates the two states comes from the distance between points and from the height difference between normal and anomalous points.**
 
-# Checking data to identify patterns and properly encode the information
+# Identify patterns to properly encode the information
 
 <!-- 📊 normal/anomalous pattern detection over time -->
 <img width="860" height="420" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
