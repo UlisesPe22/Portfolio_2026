@@ -2,7 +2,18 @@
 Beekeepers can't check every hive, every day — and by the time a problem is visible from the outside, it's often too late. This solution turns a hive into a connected device: a **BME280 sensor** that creates **temperature, humidity, and pressure** readings, and a trained **LSTM model** continuously analyzes the pattern of those readings to flag whether the colony looks healthy ("queen producing") or at risk ("queen not producing").
 
 The result is a live web dashboard a beekeeper can check from their phone or laptop — remote hive health monitoring, without disturbing the bees.
+## 📑 Table of Contents
 
+- [The Problem: Why a Queenless Hive Matters](#the-problem-why-a-queenless-hive-matters)
+- [Data & IoT Sensors](#data--iot-sensors)
+  - [Exploratory Data Analysis](#exploratory-data-analysis)
+- [Checking data to identify patterns and properly encode the information](#checking-data-to-identify-patterns-and-properly-encode-the-information)
+  - [Feature Engineering](#feature-engineering)
+- [Model: LSTM on Sliding Windows // Description of Supervised Training](#model-lstm-on-sliding-windows--description-of-supervised-training)
+  - [Results](#results)
+- [System Architecture](#system-architecture)
+- [Getting Started](#getting-started)
+- 
 ## The Problem: Why a Queenless Hive Matters
 
 A hive's queen is its entire reason for organizational cohesion. When she is missing or not accepted by the colony:
@@ -46,13 +57,15 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 | PC2 | Weather Humidity | 0.21 |
 | PC2 | Weather Temperature | 0.19 |
 
-<!-- 📊 normal/anomalous pattern detection over time -->
-<img width="860" height="420" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
-
 **Conclusions from EDA:**
 - `hive_temperature`, `hive_humidity`were selected as the predictive features
 - Target variable: `queen_status`
 - **As shown in the image above, the information that differentiates the two states comes from the distance between points and from the height difference between normal and anomalous points.**
+
+# Checking data to identify patterns and properly encode the information
+
+<!-- 📊 normal/anomalous pattern detection over time -->
+<img width="860" height="420" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
 
 ## Feature Engineering
 
@@ -61,7 +74,7 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 - <img width="1100" height="120" alt="image" src="https://github.com/user-attachments/assets/da9d164d-b4dd-40ca-bd8b-109ac077f1f6" />
 
 
-## Model: LSTM on Sliding Windows // Description of Supervised Training 
+# Model: LSTM on Sliding Windows // Description of Supervised Training 
 
 The dataset came with labeled ground truth (queen_status), so the model was trained in a supervised fashion — learning to map sequences of sensor readings to a known Normal/Anomaly label. This training phase is what produced hive_model.h5
 
@@ -78,7 +91,7 @@ The dataset came with labeled ground truth (queen_status), so the model was trai
 
 <img width="400" alt="image" src="https://github.com/user-attachments/assets/5e086620-e16d-46b8-8340-7ea92bbbc9cc" /> <img width="400" alt="image" src="https://github.com/user-attachments/assets/5e0f31b8-2fcf-4715-8ad6-ed3e66cfd2d5" />
 
-## System Architecture
+# System Architecture
 
 | Component | Responsibility |
 |---|---|
@@ -91,7 +104,7 @@ The dataset came with labeled ground truth (queen_status), so the model was trai
 | `templates/dashboard.html` | Live dashboard — polls the API every 2s, shows prediction, confidence, stats, recent readings |
 | `tests/simulator.py` | Not a unit test — replays real historical rows into the live API to simulate a sensor stream |
 
-## Getting Started
+# Getting Started
 
 ```
 # 1. Create a virtual environment
