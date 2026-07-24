@@ -1,21 +1,14 @@
 # 🐝Beehive Anomaly Detection System
-
-## Overview
-
-Beekeepers can't check every hive, every day — and by the time a problem is visible from the outside, it's often too late. This solution turns a hive into a connected device: a **BME280 sensor** streams temperature, humidity, and pressure readings, and a trained **LSTM model** continuously analyzes the pattern of those readings to flag whether the colony looks healthy ("queen producing") or at risk ("queen not producing / not accepted").
+Beekeepers can't check every hive, every day — and by the time a problem is visible from the outside, it's often too late. This solution turns a hive into a connected device: a **BME280 sensor** that creates **temperature, humidity, and pressure** readings, and a trained **LSTM model** continuously analyzes the pattern of those readings to flag whether the colony looks healthy ("queen producing") or at risk ("queen not producing").
 
 The result is a live web dashboard a beekeeper can check from their phone or laptop — remote hive health monitoring, without disturbing the bees.
-
-This project covers the full pipeline: exploratory data analysis → feature engineering → deep learning model → Flask API → live dashboard → a simulator that replays real historical data to demonstrate the system end-to-end.
 
 ## The Problem: Why a Queenless Hive Matters
 
 A hive's queen is its entire reason for organizational cohesion. When she is missing or not accepted by the colony:
 
 - **Hive collapse** — the colony's health, cohesion, and organization deteriorate rapidly
-- **Financial and time costs** — every day the problem goes undetected shortens the window to save the hive; left too long, the colony becomes unrecoverable
-
-Early detection is the difference between a quick intervention and losing the hive entirely — which is the entire premise for automating this with sensors + ML instead of relying on manual inspection.
+- **Financial and time costs** — every day the problem goes undetected shortens the window to save the hive; left too long, the colony becomes unrecoverableg
 
 ![Dashboard Demo](assets_readme/dashboard_anomaly_detection_app.gif)
 
@@ -25,10 +18,10 @@ Early detection is the difference between a quick intervention and losing the hi
 ![SQLite](https://img.shields.io/badge/SQLite-Database-003B57?logo=sqlite&logoColor=white)
 
 
-## Data & IoT Sensors
+# Data & IoT Sensors
 
 - **Dataset:** Yang, A. (2023). *Beehive Sounds* [Data set]. Kaggle. https://www.kaggle.com/datasets/annajyang/beehive-sounds
-- **IoT Device:** BME280 temperature / humidity / pressure sensor, mounted to stream live hive conditions
+- **IoT Device:** BME280 senor readings of: temperature / humidity / pressure sensor, mounted to stream live hive conditions
 
 | State | Meaning |
 |---|---|
