@@ -58,7 +58,7 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 | PC2 | Weather Temperature | 0.19 |
 
 **Conclusions from EDA:**
-- `hive_temperature`, `hive_humidity`were selected as the predictive features
+- `temperature`, `humidity` and 'pressure' were selected as the predictive features
 - Target variable: `queen_status`
 - **As shown in the image above, the information that differentiates the two states comes from the distance between points and from the height difference between normal and anomalous points.**
 
