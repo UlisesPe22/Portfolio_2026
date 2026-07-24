@@ -7,7 +7,7 @@ The result is a live web dashboard a beekeeper can check from their phone or lap
 - [The Problem: Why a Queenless Hive Matters](#the-problem-why-a-queenless-hive-matters)
 - [Data & IoT Sensors](#data--iot-sensors)
   - [Exploratory Data Analysis](#exploratory-data-analysis)
-- [ Identify patterns and properly encode the information](#identify-patterns-and-properly-encode-the-information)
+- [Identify patterns and properly encode the information](#identify-patterns-and-properly-encode-the-information)
   - [Feature Engineering](#feature-engineering)
 - [Model: LSTM on Sliding Windows // Description of Supervised Training](#model-lstm-on-sliding-windows--description-of-supervised-training)
   - [Results](#results)
