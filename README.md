@@ -67,7 +67,7 @@ A PCA analysis was run to understand which sensor readings drive the most varian
 <!-- 📊 normal/anomalous pattern detection over time -->
 <img width="860" height="420" alt="image" src="https://github.com/user-attachments/assets/6194bdbf-260f-48a8-aae8-bc8dc9328a9a" />
 
-## Feature Engineering
+# Feature Engineering
 
 - **Scaling:** all features normalized with a **MinMax scaler**. This is used to preserve and encode the distance information between points.
 - **Engineered features:** 3 additional features capturing short/mid/long-term drift are added to train the anomaly detection model — the Euclidean distance between the current point *x* and *x-n*, for **n = 3, 5, and 10**
